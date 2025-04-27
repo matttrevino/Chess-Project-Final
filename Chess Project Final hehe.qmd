@@ -1,0 +1,47 @@
+```{r}
+#| echo: false
+library(tidyverse)
+library(janitor)
+library(ggformula)
+library(readr)
+library(dplyr)
+chess <- read_csv("chess_games.csv")
+```
+```{r}
+chess %>%
+  count(opening_code)
+n_distinct(chess$opening_code)
+```
+
+## Data Description
+
+1. The source of my data was the online database Kaggle.
+2. The data set contains many variables dealing with chess games, such as which color won, how the victory was secured, whether the game was ranked or casual, the username of each color, the format of the game (rapid, blitz, bullet variations), the move order, the opening name and its respective ID code, the opening variation (exchange, two-knights, Smith-Morra, etc.), and finally the number of opening moves in the game (before the opening variations' respective theory was over).
+3. I want to answer a few questions based off of this data. I want to determine which color is more likely to win first and foremost. This will be rather easy to answer, and so I wish to also dive deeper in answering which color is most likely to win based on different opening variations. This question may be more challenging to answer because there are many different chess openings. In fact there are 365 unique openings within this data set! This may be too much to analyze, so I think analyzing just the top 10 most popular openings would be sufficient. Another question I would like to answer is the percentage of games decided by checkmate based off of different factors, such as opening variation, color, and/or time increment format. I may come up with more questions as I work with the data set because it is rather dense!
+
+## Data Visualization
+1. I want to create various plots such as violin plots which will show the amount of wins based on color for the top 10 openings I will be analyzing. To do this I will need to change the data around a little bit like mutating the names of the opening_code variable to display the unique opening name instead of the code name. I also wish to create boxplots/violin plots to show things like win percentage based on the time format for each respective color. Theory will say that white has a better chance of winning each game. This is typically because white moves first, and has the initial say of how the game will be played. Black's usual goal in chess is to defend the attack by white, and counter by either drawing the game or winning. With this in mind, it will be assumed that white should have a higher winning percentage.
+2. I ultimately wish to create visualizations that have unique colors assigned to each opening choice. This will help create a strong visual that is easy to understand. I can also color code certain plots to be either white or black to represent the respective color for each player.
+3. I will need to change some variable names to make it easier to write the code. When creating the plots, I will also need to change the respective codes of the top 10 opening choices from things like "A10" or "B20" to their respective opening name, which will be rather simple as the opening code is attached to the opening name in another column called "opening_shortname."
+
+## Data Cleaning
+
+1. Do you need to reformat any variables into different types (e.g. factors, time, dates, strings)? Or remove information from variable values?
+Yes
+2. Do you need to deal with any missing data, especially missing data coded other than NA?
+Yes
+3. Do you need to filter your data? How?
+No
+4. Do you need to create any new variables? What variables? How?
+No
+5. Do you need to add new data (join) to your data? What data? How?
+No
+6. Are there any variables you can exclude from your data?
+Yes
+7. Do you need pivot your data in any way? Why? How?
+No
+8. Do you need to summarize any of the variables? Which ones? How?
+Yes, but mostly just explaining what they mean because not everybody understands chess. I may need to include graphics of what each opening may look like at its core (like the English, Spanish, Nimzo-Larsen, etc.)
+9. What other aspects of your data need to be “fixed” in order to make your data visualizations?
+I am not quite sure yet, but once I start the process I will likely discover issues with code. For now, it does not appear that I need to make any changes.
+
