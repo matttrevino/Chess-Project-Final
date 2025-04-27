@@ -1,3 +1,9 @@
+---
+title: "Untitled"
+format: html
+editor: visual
+---
+
 ```{r}
 #| echo: false
 library(tidyverse)
