@@ -12,7 +12,7 @@ website:
       - href: about.qmd
         text: "About Me"
       - href: Chess-Project-Final/Chess%20Project%20Final%20hehe.qmd
-        text: "Chess Opening Win Rates"
+        text: "Chess Openings and Victory Status"
         
 format:
   html:
