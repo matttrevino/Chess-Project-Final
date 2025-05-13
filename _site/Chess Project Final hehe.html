@@ -112,9 +112,8 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#data-description" id="toc-data-description" class="nav-link active" data-scroll-target="#data-description">Data Description</a></li>
-  <li><a href="#data-visualization" id="toc-data-visualization" class="nav-link" data-scroll-target="#data-visualization">Data Visualization</a></li>
-  <li><a href="#data-cleaning" id="toc-data-cleaning" class="nav-link" data-scroll-target="#data-cleaning">Data Cleaning</a></li>
+  <li><a href="#visualization-1" id="toc-visualization-1" class="nav-link active" data-scroll-target="#visualization-1">Visualization 1</a></li>
+  <li><a href="#visualization-2" id="toc-visualization-2" class="nav-link" data-scroll-target="#visualization-2">Visualization 2</a></li>
   </ul>
 </nav>
     </div>
@@ -200,6 +199,9 @@ lgl  (1): rated
 <pre><code>[1] 365</code></pre>
 </div>
 </div>
+<section id="visualization-1" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-1">Visualization 1</h2>
+<p>Here is a visualization of the win percentages of white and black based on opening choice. Opening choice is purely in white’s control as they have first move, but black can still sway the game in some type of direction based on move responses. I chose to analyze some popular openings like the English, Ruy Lopez, and Sicilian Defense as well as less common openings like the Mieses Opening and Slav Defense. As we can see from the graph alone, white typically has winning advantage over black based on the data set I analyzed. The English, Ruy Lopez, and Queen’s Gambit are 3 extremely popular openings for white, and each have a respectable win rate. The Mieses Opening is the one exception, with a large advantage for black, though this could be due to the low sample size, as well as the theory behind the Mieses Opening; it’s not an opening that gives a direct advantage for white at the start of the game, so is typically avoided.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 20 × 5
@@ -235,6 +237,10 @@ lgl  (1): rated
 </div>
 </div>
 </div>
+</section>
+<section id="visualization-2" class="level2">
+<h2 class="anchored" data-anchor-id="visualization-2">Visualization 2</h2>
+<p>This visualization shows the type of Victory Status by the turn count. In chess, each player takes turns making a move. Each time a player completes 1 move each, that counts as 1 turn. So when 1 turn happens, both players have made a single move. In this visualization, we see that Resign has the lowest number of turns, meaning that people who are resigning often are doing so relatively early on in the game. This may be due to a million factors, but is often due to feeling as though they cannot win the game due to a poor position, and disadvantage. Next is Mate, which is short for Checkmate. Checkmate is when a player’s King can no longer make any legal move while simultaneously being attacked by a piece. This ends the game for the attacking player, who is declared victorious. Next, the variable Out of Time happens when a player loses because they did not make a move in time. Time formats are an extra factor in chess matches which add pressure to both players to perform quickly, or lose! Lastly, we see that games that end in draws often go on for very long. This is likely because games decided by draws often have far less pieces, therefore far less variables and possible outcomes on the chess board, and either end the game with just their king on the board, or perhaps one piece each where they realize that neither of them can actually win. Draws are also very common at higher ranks.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -244,35 +250,6 @@ lgl  (1): rated
 </div>
 </div>
 </div>
-<section id="data-description" class="level2">
-<h2 class="anchored" data-anchor-id="data-description">Data Description</h2>
-<ol type="1">
-<li>The source of my data was the online database Kaggle.</li>
-<li>The data set contains many variables dealing with chess games, such as which color won, how the victory was secured, whether the game was ranked or casual, the username of each color, the format of the game (rapid, blitz, bullet variations), the move order, the opening name and its respective ID code, the opening variation (exchange, two-knights, Smith-Morra, etc.), and finally the number of opening moves in the game (before the opening variations’ respective theory was over).</li>
-<li>I want to answer a few questions based off of this data. I want to determine which color is more likely to win first and foremost. This will be rather easy to answer, and so I wish to also dive deeper in answering which color is most likely to win based on different opening variations. This question may be more challenging to answer because there are many different chess openings. In fact there are 365 unique openings within this data set! This may be too much to analyze, so I think analyzing just the top 10 most popular openings would be sufficient. Another question I would like to answer is the percentage of games decided by checkmate based off of different factors, such as opening variation, color, and/or time increment format. I may come up with more questions as I work with the data set because it is rather dense!</li>
-</ol>
-</section>
-<section id="data-visualization" class="level2">
-<h2 class="anchored" data-anchor-id="data-visualization">Data Visualization</h2>
-<ol type="1">
-<li>I want to create various plots such as violin plots which will show the amount of wins based on color for the top 10 openings I will be analyzing. To do this I will need to change the data around a little bit like mutating the names of the opening_code variable to display the unique opening name instead of the code name. I also wish to create boxplots/violin plots to show things like win percentage based on the time format for each respective color. Theory will say that white has a better chance of winning each game. This is typically because white moves first, and has the initial say of how the game will be played. Black’s usual goal in chess is to defend the attack by white, and counter by either drawing the game or winning. With this in mind, it will be assumed that white should have a higher winning percentage.</li>
-<li>I ultimately wish to create visualizations that have unique colors assigned to each opening choice. This will help create a strong visual that is easy to understand. I can also color code certain plots to be either white or black to represent the respective color for each player.</li>
-<li>I will need to change some variable names to make it easier to write the code. When creating the plots, I will also need to change the respective codes of the top 10 opening choices from things like “A10” or “B20” to their respective opening name, which will be rather simple as the opening code is attached to the opening name in another column called “opening_shortname.”</li>
-</ol>
-</section>
-<section id="data-cleaning" class="level2">
-<h2 class="anchored" data-anchor-id="data-cleaning">Data Cleaning</h2>
-<ol type="1">
-<li>Do you need to reformat any variables into different types (e.g.&nbsp;factors, time, dates, strings)? Or remove information from variable values? Yes</li>
-<li>Do you need to deal with any missing data, especially missing data coded other than NA? Yes</li>
-<li>Do you need to filter your data? How? No</li>
-<li>Do you need to create any new variables? What variables? How? No</li>
-<li>Do you need to add new data (join) to your data? What data? How? No</li>
-<li>Are there any variables you can exclude from your data? Yes</li>
-<li>Do you need pivot your data in any way? Why? How? No</li>
-<li>Do you need to summarize any of the variables? Which ones? How? Yes, but mostly just explaining what they mean because not everybody understands chess. I may need to include graphics of what each opening may look like at its core (like the English, Spanish, Nimzo-Larsen, etc.)</li>
-<li>What other aspects of your data need to be “fixed” in order to make your data visualizations? I am not quite sure yet, but once I start the process I will likely discover issues with code. For now, it does not appear that I need to make any changes.</li>
-</ol>
 
 
 </section>
