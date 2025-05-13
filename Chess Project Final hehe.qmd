@@ -33,7 +33,7 @@ library(stringr)
 library(ggplot2)
 chess <- read_csv("chess_games.csv")
 ```
-
+To clean the data, I ensured that I would only analyze ranked games instead of casual and ranked games. Afterwards, I filtered the games based on opening and then mutated the variables to ensure that all the openings that include the text would be seen. This was to ensure that games with variations attached, like "Nimzo-Larsen Attack ___ Variation" would still be included under the Nimzo-Larsen Attack umbrella. I then summarized the variables I wanted into new data frames to analyze the research questions. 
 ```{r}
 #reading data in and checking stats, plus filtering by rated only
 chess %>%
@@ -41,11 +41,7 @@ chess %>%
 n_distinct(chess$opening_code)
 chess_rated <- chess %>% 
   filter(rated == "TRUE")
-```
 
-## Visualization 1
-Here is a visualization of the win percentages of white and black based on opening choice. Opening choice is purely in white's control as they have first move, but black can still sway the game in some type of direction based on move responses. I chose to analyze some popular openings like the English, Ruy Lopez, and Sicilian Defense as well as less common openings like the Mieses Opening and Slav Defense. As we can see from the graph alone, white typically has winning advantage over black based on the data set I analyzed. The English, Ruy Lopez, and Queen's Gambit are 3 extremely popular openings for white, and each have a respectable win rate. The Mieses Opening is the one exception, with a large advantage for black, though this could be due to the low sample size, as well as the theory behind the Mieses Opening; it's not an opening that gives a direct advantage for white at the start of the game, so is typically avoided. 
-```{r}
 #listing openings to use
 openings_of_interest <- c(
   "Slav Defense", "English Opening", "Queen's Gambit", "Ruy Lopez",
@@ -80,7 +76,10 @@ win_summary <- filtered_games %>%
   mutate(total_games = sum(wins),
          win_percentage = wins / total_games * 100)
 print(win_summary)
-
+```
+## Visualization 1
+Here is a visualization of the win percentages of white and black based on opening choice. Opening choice is purely in white's control as they have first move, but black can still sway the game in some type of direction based on move responses. I chose to analyze some popular openings like the English, Ruy Lopez, and Sicilian Defense as well as less common openings like the Mieses Opening and Slav Defense. As we can see from the graph alone, white typically has winning advantage over black based on the data set I analyzed. The English, Ruy Lopez, and Queen's Gambit are 3 extremely popular openings for white, and each have a respectable win rate. The Mieses Opening is the one exception, with a large advantage for black, though this could be due to the low sample size, as well as the theory behind the Mieses Opening; it's not an opening that gives a direct advantage for white at the start of the game, so is typically avoided. 
+```{r}
 #visualization of win color by opening chosen
 ggplot(win_summary, aes(x = opening_shortname, y = win_percentage, fill = winner)) +
   geom_col(position = "dodge") +
