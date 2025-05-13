@@ -1,9 +1,27 @@
 ---
-title: "Untitled"
-format: html
+project: Chess Opening Win Rates
+  type: website
+  output-dir: docs
+
+website:
+  title: "ePortfolio"
+  navbar:
+    left:
+      - href: index.qmd
+        text: "Home"
+      - href: about.qmd
+        text: "About Me"
+      - href: Chess-Project-Final/Chess%20Project%20Final%20hehe.qmd
+        text: "Chess Opening Win Rates"
+        
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
 editor: visual
 ---
-
 ```{r}
 #| echo: false
 library(tidyverse)
@@ -11,12 +29,80 @@ library(janitor)
 library(ggformula)
 library(readr)
 library(dplyr)
+library(stringr)
+library(ggplot2)
 chess <- read_csv("chess_games.csv")
 ```
+
 ```{r}
 chess %>%
   count(opening_code)
 n_distinct(chess$opening_code)
+chess_rated <- chess %>% 
+  filter(rated == "TRUE")
+```
+
+```{r}
+#listing openings to use
+openings_of_interest <- c(
+  "Slav Defense", "English Opening", "Queen's Gambit", "Ruy Lopez",
+  "Italian Game", "Sicilian Defense", "Nimzo-Larsen Attack",
+  "Scandinavian Defense", "French Defense", "Mieses Opening"
+)
+
+#ensuring all openings containing these names are used (since there are variations)
+pattern <- paste(openings_of_interest, collapse = "|")
+filtered_games <- chess_rated %>%
+  filter(str_detect(opening_shortname, pattern)) %>%         # keep games with matching openings
+  mutate(opening_shortname = case_when(
+    str_detect(opening_shortname, "Nimzo-Larsen Attack") ~ "Nimzo-Larsen Attack",
+    str_detect(opening_shortname, "Slav Defense") ~ "Slav Defense",
+    str_detect(opening_shortname, "Sicilian Defense") ~ "Sicilian Defense",
+    str_detect(opening_shortname, "English Opening") ~ "English Opening",
+    str_detect(opening_shortname, "Queen's Gambit") ~ "Queen's Gambit",
+    str_detect(opening_shortname, "Ruy Lopez") ~ "Ruy Lopez",
+    str_detect(opening_shortname, "Italian Game") ~ "Italian Game",
+    str_detect(opening_shortname, "Scandinavian Defense") ~ "Scandinavian Defense",
+    str_detect(opening_shortname, "French Defense") ~ "French Defense",
+    str_detect(opening_shortname, "Mieses Opening") ~ "Mieses Opening",
+    TRUE ~ "Other"  
+  ))
+
+#summarizing win percentages into a model
+win_summary <- filtered_games %>%
+  filter(winner %in% c("White", "Black")) %>%
+  group_by(opening_shortname, winner) %>%
+  summarize(wins = n(), .groups = "drop") %>%
+  group_by(opening_shortname) %>%
+  mutate(total_games = sum(wins),
+         win_percentage = wins / total_games * 100)
+print(win_summary)
+
+#visualization of win color by opening chosen
+ggplot(win_summary, aes(x = opening_shortname, y = win_percentage, fill = winner)) +
+  geom_col(position = "dodge") +
+  labs(x = "Opening Name", y = "Win Percentage", fill = "Winner Color",
+       title = "Win Percentage by Opening and Color") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+```
+```{r}
+#summary stats for the average turn count based on win condition  
+turns_summary <- filtered_games %>%
+  group_by(victory_status) %>%
+  summarize(
+    avg_turns = mean(turns, na.rm = TRUE),   # Average turns
+    median_turns = median(turns, na.rm = TRUE),   # Median turns
+    sd_turns = sd(turns, na.rm = TRUE),   # Standard deviation
+    min_turns = min(turns, na.rm = TRUE),   # Minimum turns
+    max_turns = max(turns, na.rm = TRUE),   # Maximum turns
+    n = n(),   # Number of games (for each victory status)
+    .groups = "drop"
+  )
 ```
 
 ## Data Description
